@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   const { data: user, error } = await supabase.auth.getUser(token)
 
   if (error || !user) {
-    return NextResponse.json({ error: 'Token inválido' }, { status: 403 })
+    return NextResponse.json({ error: 'Token inválido' + authHeader }, { status: 403 })
   }
 
   return NextResponse.json({ mensaje: `Hola ${user.user.email}` })
