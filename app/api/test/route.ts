@@ -1,4 +1,3 @@
-// app/api/protegido/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/utils/supabase/supabase-server';
 
