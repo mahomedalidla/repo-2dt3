@@ -1,19 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/utils/supabase/supabase-server';
+import { NextRequest, NextResponse } from 'next/server'
+import { supabase } from '@/lib/utils/supabase/supabase-server'
 
 export async function GET(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  const token = authHeader?.split(' ')[1];
+  const authHeader = req.headers.get('authorization')
 
-  if (!token) {
-    return NextResponse.json({ error: 'Token faltante' }, { status: 401 });
+  if (!authHeader) {
+    return NextResponse.json({ error: 'Token faltante' }, { status: 401 })
   }
 
-  const { data: user, error } = await supabase.auth.getUser(token);
+  // Soportar formatos con o sin "Bearer"
+  const token = authHeader.startsWith('Bearer ')
+    ? authHeader.split(' ')[1]
+    : authHeader
+
+  const { data: user, error } = await supabase.auth.getUser(token)
 
   if (error || !user) {
-    return NextResponse.json({ error: 'Token inválido.' }, { status: 403 });
+    return NextResponse.json({ error: 'Token inválido' }, { status: 403 })
   }
 
-  return NextResponse.json({ mensaje: `Hola ${user.user.email}` });
+  return NextResponse.json({ mensaje: `Hola ${user.user.email}` })
 }
