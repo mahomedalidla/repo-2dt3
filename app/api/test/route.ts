@@ -4,6 +4,8 @@ import { supabase } from '@/lib/utils/supabase/supabase-server'
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get('authorization')
 
+  console.log('Authorization header:', authHeader)
+
   if (!authHeader) {
     return NextResponse.json({ error: 'Token faltante' }, { status: 401 })
   }
